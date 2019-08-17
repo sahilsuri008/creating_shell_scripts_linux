@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [[ $# -eq 0 ]] ; then
+		read -rp "Enter username: " user_name
+		read -rsp "Enter password: " user_password
+		echo ""
+		read -srp "Enter password to confirm: " user_password_check
+		echo
+		if [[ $user_password != $user_password_check ]] ; then
+				echo "Passwords did not match. Exiting"
+				exit 1
+		fi
+else
+		user_name="$1"
+		user_password="${2:-Password1}"
+fi
+
+echo "$user_name : $user_password"
