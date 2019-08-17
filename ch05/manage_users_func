@@ -1,0 +1,24 @@
+#!/bin/bash
+
+function prompt_users () {
+
+		read -rp "Enter username: " user_name
+		read -rsp "Enter password: " user_password
+		echo ""
+		read -srp "Enter password to confirm: " user_password_check
+		echo
+}
+
+
+if [[ $# -eq 0 ]] ; then
+		prompt_users
+		if [[ $user_password != $user_password_check ]] ; then
+				echo "Passwords did not match. Exiting"
+				prompt_users
+		fi
+else
+		user_name="$1"
+		user_password="${2:-Password1}"
+fi
+
+echo "$user_name : $user_password"

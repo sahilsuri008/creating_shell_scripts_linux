@@ -1,0 +1,31 @@
+#!/bin/bash
+
+function prompt_users () {
+		message=${1:-Enter user details}
+		echo -e "\n${message}\n"
+		read -rp "Enter username: " user_name
+		read -rsp "Enter password: " user_password
+		echo ""
+		read -srp "Enter password to confirm: " user_password_check
+		echo
+}
+
+function check_users () {
+		grep -q "^${1}" /etc/passwd && return 0
+}
+
+if [[ $# -eq 0 ]] ; then
+		prompt_users
+		while [[ $user_password != $user_password_check ]] ; do
+				prompt_users "Passwords did not match. Exiting"
+		done
+else
+		user_name="$1"
+		user_password="${2:-Password1}"
+fi
+
+while check_users $user_name ; do
+		prompt_users "User already exist. Please supply different user name"
+done
+
+echo "$user_name : $user_password"
