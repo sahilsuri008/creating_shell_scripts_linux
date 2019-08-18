@@ -1,0 +1,18 @@
+#!/bin/bash
+
+while true; do
+	clear
+	echo "Please enter you selection: "
+	echo "1 to display user name"
+	echo "2 to check date 90 days ago"
+	echo "3 to quit"
+	read -sn1 		#n1 allos only one character to be typed in#
+	case $REPLY in
+		1) whoami;;
+		2) date --date "90 days";;
+		3) exit 0;;
+		*) echo "Selection not recognize.";;
+	esac
+	read -n1 -p "Press any key to continue"
+done
+

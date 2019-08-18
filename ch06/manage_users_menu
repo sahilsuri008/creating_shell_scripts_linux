@@ -1,0 +1,50 @@
+#!/bin/bash
+
+function prompt_users () {
+		message=${1:-Enter user details}
+		echo -e "\n${message}\n"
+		read -rp "Enter username: " user_name
+		read -rsp "Enter password: " user_password
+		echo ""
+		read -srp "Enter password to confirm: " user_password_check
+		echo
+}
+
+function check_users () {
+		grep -q "^${1}" /etc/passwd && return 0
+}
+
+function add_user () {
+		prompt_user "Enter user details"
+		
+		while check_users $user_name ; do 	#check_user func returns 0 then while loop condition is true#
+			prompt_users "User already exist. Please supply different user name"
+		done
+		echo "Adding $user_name"
+}
+
+function delete_user () {
+		read -p "enter user name to delete: " user_name 	
+		while ! check_users $user_name ; do 	#check_user func does not return 0 then loop runs#
+			echo "User not found. Enter another user to delete"
+			return 1 	#return 1 leaves the func but keeps script running
+		done
+		echo "Deleting $user_name"
+}
+
+
+while true; do
+	clear
+	echo "Please enter your selection"
+	echo "1 for user add"
+	echo "2 for user delete"
+	echo "3 to quit"
+	read -sn1
+	
+	case $REPLY in
+		1) add_user ;;
+		2) delete_user;;
+		3) exit 0;;
+	esac
+	read -n1 -p "Press any key to continue"
+done
